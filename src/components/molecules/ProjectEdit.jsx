@@ -7,6 +7,8 @@ import Input from "../atoms/Input";
 import { getProjectById, updateProject } from "../../api/projects";
 import TextArea from "../atoms/TextArea";
 import { AddEditContent, Wrapper } from "../../styled/common";
+import { validateProject } from "../../utils/validations";
+import Loader from "../atoms/Loader";
 
 function ProjectEdit() {
   const [project, setProject] = useState(null);
@@ -35,19 +37,20 @@ function ProjectEdit() {
   }
 
   function handleSave() {
-    if (name && description) {
+    let errors = validateProject(name, description);
+    if (errors.length === 0) {
       updateProject(project.id, name, description)
         .then((res) => {
           navigate(-1);
         })
         .catch((err) => console.log(err));
     } else {
-      addError("Please specify both name and description");
+      addError(errors);
     }
   }
 
   if (!project) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (

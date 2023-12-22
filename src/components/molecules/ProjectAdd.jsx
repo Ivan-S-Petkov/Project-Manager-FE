@@ -6,10 +6,11 @@ import Input from "../atoms/Input";
 import { createProject } from "../../api/projects";
 import TextArea from "../atoms/TextArea";
 import { AddEditContent } from "../../styled/common";
+import { validateAddProject } from "../../utils/validations";
 
 function ProjectAdd({ projects, setProjects, toggleAdd }) {
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
+  const [name, setName] = useState(null);
+  const [description, setDescription] = useState(null);
   const { addError } = useContext(ErrorContext);
 
   function handleName(name) {
@@ -22,7 +23,8 @@ function ProjectAdd({ projects, setProjects, toggleAdd }) {
 
   function handleAddForm(e) {
     e.preventDefault();
-    if (name && description) {
+    let error = validateProject(name, description);
+    if (error.length === 0) {
       createProject(name, description)
         .then((res) => {
           setProjects([...projects, res.data]);
@@ -30,7 +32,7 @@ function ProjectAdd({ projects, setProjects, toggleAdd }) {
         })
         .catch((err) => console.log(err));
     } else {
-      addError("Please specify both name and description!");
+      addError(error);
     }
   }
 
