@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ENDPOINT } from "../enviroments";
 
-const API_URL = "http://localhost:8080/api/employees";
+const API_URL = API_ENDPOINT + `api/employees`;
 
 export function getAllEmployees() {
   return axios.get(API_URL);
