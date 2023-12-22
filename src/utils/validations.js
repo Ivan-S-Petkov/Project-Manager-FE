@@ -50,3 +50,30 @@ export function validateInputs(projectId, employeeId, startDate, endDate) {
   }
   return errors;
 }
+
+export function validateEmployee(name, department) {
+  let errors = [];
+  console.log(name.lenght < 2);
+  if (name === null || name.length < 2 || name.length > 20) {
+    errors.push("Name should be between 2 and 20 characters.");
+  }
+  if (department === null || department.length < 2 || department.length > 20) {
+    errors.push("Department should be between 2 and 20 characters.");
+  }
+  return errors;
+}
+
+export function validateProject(name, description) {
+  let errors = [];
+  if (name === null || name.length < 2 || name.length > 20) {
+    errors.push("Name should be between 2 and 20 characters.");
+  }
+  if (
+    description === null ||
+    description.length < 10 ||
+    description.length > 200
+  ) {
+    errors.push("Description should be between 10 and 200 characters.");
+  }
+  return errors;
+}
