@@ -112,7 +112,9 @@ const PoweredBy = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   gap: 5px;
+
   img {
+    border-radius: 0px;
     max-width: 60px;
     margin: 3px;
   }
