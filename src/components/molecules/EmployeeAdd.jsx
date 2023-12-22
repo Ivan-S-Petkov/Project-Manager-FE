@@ -5,10 +5,11 @@ import { ErrorContext } from "../../providers/ErrorProvider";
 import SubmitButton from "../atoms/SubmitButton";
 import Input from "../atoms/Input";
 import { AddEditContent } from "../../styled/common";
+import { validateEmployee } from "../../utils/validations";
 
 function EmployeeAdd({ employees, setEmployees, toggleAdd }) {
-  const [name, setName] = useState();
-  const [department, setDepartment] = useState();
+  const [name, setName] = useState(null);
+  const [department, setDepartment] = useState(null);
   const { addError } = useContext(ErrorContext);
 
   function handleName(name) {
@@ -21,7 +22,8 @@ function EmployeeAdd({ employees, setEmployees, toggleAdd }) {
 
   function handleAddForm(e) {
     e.preventDefault();
-    if (name && department) {
+    let errors = validateEmployee(name, department);
+    if (errors.length === 0) {
       createEmployee(name, department)
         .then((res) => {
           setEmployees([...employees, res.data]);
@@ -29,7 +31,7 @@ function EmployeeAdd({ employees, setEmployees, toggleAdd }) {
         })
         .catch((err) => console.log(err));
     } else {
-      addError("Please specify both name and department!");
+      addError(errors);
     }
   }
 

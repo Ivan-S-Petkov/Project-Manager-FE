@@ -6,6 +6,8 @@ import { ErrorContext } from "../../providers/ErrorProvider";
 import Button from "../atoms/Button";
 import Input from "../atoms/Input";
 import { AddEditContent, Wrapper } from "../../styled/common";
+import { validateEmployee } from "../../utils/validations";
+import Loader from "../atoms/Loader";
 
 function EmployeeEdit() {
   const [employee, setEmployee] = useState(null);
@@ -34,19 +36,20 @@ function EmployeeEdit() {
   }
 
   function handleSave() {
-    if (name && department) {
+    let errors = validateEmployee(name, department);
+    if (errors.length === 0) {
       updateEmployee(employee.id, name, department)
         .then((res) => {
           navigate(-1);
         })
         .catch((err) => console.log(err));
     } else {
-      addError("Please specify both name and department");
+      addError(errors);
     }
   }
 
   if (!employee) {
-    return <>Loading...</>;
+    return <Loader />;
   }
 
   return (
