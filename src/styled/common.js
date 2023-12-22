@@ -10,6 +10,10 @@ export const Message = styled.p`
 export const Wrapper = styled.div`
   font-family: "Work Sans";
   color: #2f3e46;
+
+  h2 {
+    padding-left: 20px;
+  }
 `;
 
 export const Options = styled.div`
