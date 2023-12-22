@@ -54,6 +54,7 @@ function Footer() {
 }
 
 const Wrapper = styled.div`
+  margin-top: 100px;
   background-color: #354f52;
   color: white;
   position: relative;
