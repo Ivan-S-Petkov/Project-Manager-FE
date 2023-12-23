@@ -6,7 +6,7 @@ import Input from "../atoms/Input";
 import { createProject } from "../../api/projects";
 import TextArea from "../atoms/TextArea";
 import { AddEditContent } from "../../styled/common";
-import { validateAddProject } from "../../utils/validations";
+import { validateProject } from "../../utils/validations";
 
 function ProjectAdd({ projects, setProjects, toggleAdd }) {
   const [name, setName] = useState(null);
