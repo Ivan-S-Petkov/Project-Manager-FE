@@ -1,9 +1,11 @@
+import moment from "moment";
+
 export function isNotEmpty(string) {
   return string.length;
 }
 
 export function isNumber(number) {
-  return !isNaN(number);
+  return Number(number);
 }
 
 export function isNull(date) {
@@ -22,8 +24,8 @@ export function isBeforeTomorrow(date) {
 }
 
 export function firstDateIsBeforeOrEquialSecond(date1, date2) {
-  let startDate = Date.parse(date1);
-  let endDate = date2 ? Date.parse(date2) : new Date();
+  let startDate = moment(date1).format("YYYY/MM/DD");
+  let endDate = date2 ? moment(date2).format("YYYY/MM/DD") : moment(new Date());
   return startDate <= endDate;
 }
 
@@ -41,11 +43,7 @@ export function validateInputs(projectId, employeeId, startDate, endDate) {
   if (!(isNull(endDate) || (isDate(endDate) && isBeforeTomorrow(endDate)))) {
     errors.push("Invalid End Date");
   }
-  if (
-    isDate(startDate) &&
-    isBeforeTomorrow(startDate) &&
-    !firstDateIsBeforeOrEquialSecond(startDate, endDate)
-  ) {
+  if (!firstDateIsBeforeOrEquialSecond(startDate, endDate)) {
     errors.push("Start Date should be equal or before End Date");
   }
   return errors;
@@ -53,7 +51,6 @@ export function validateInputs(projectId, employeeId, startDate, endDate) {
 
 export function validateEmployee(name, department) {
   let errors = [];
-  console.log(name.lenght < 2);
   if (name === null || name.length < 2 || name.length > 20) {
     errors.push("Name should be between 2 and 20 characters.");
   }
