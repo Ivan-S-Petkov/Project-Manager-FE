@@ -62,8 +62,8 @@ const Wrapper = styled.div`
   font-family: "Work Sans";
 
   img {
-    border-radius: 25px;
-    max-width: 120px;
+    border-radius: 15px;
+    max-width: 80px;
   }
 `;
 
@@ -71,8 +71,9 @@ const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
+  gap: 20px;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   padding: 10px;
 `;
@@ -91,7 +92,7 @@ const Teachers = styled.div`
 `;
 
 const Logo = styled.div`
-  width: 300px;
+  width: 200px;
 
   img {
     max-width: 300px;
@@ -101,7 +102,7 @@ const Logo = styled.div`
 
 const Bracket = styled.div`
   img {
-    height: 180px;
+    height: 120px;
   }
 `;
 const Bracket180 = styled(Bracket)`
@@ -116,7 +117,7 @@ const PoweredBy = styled.div`
 
   img {
     border-radius: 0px;
-    max-width: 60px;
+    max-width: 40px;
     margin: 3px;
   }
 `;
