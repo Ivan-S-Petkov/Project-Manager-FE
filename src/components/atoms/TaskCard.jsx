@@ -81,6 +81,7 @@ const Info = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  flex-grow: 1;
 
   h5 {
     font-size: 20px;
@@ -97,6 +98,8 @@ const Employee = styled(Info)`
   border-left: 2px solid white;
   padding-left: 10px;
   align-items: start;
+  max-width: 140px;
+  width: 30%;
 
   h5 {
     text-align: left;

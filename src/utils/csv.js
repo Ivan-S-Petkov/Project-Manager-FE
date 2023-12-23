@@ -9,7 +9,9 @@ export function convertCSVToJson(csvData) {
 
   // Loop through each line of CSV data
   for (let i = 0; i < lines.length; i++) {
-    let [employee, project, startDate, endDate] = lines[i].split(",");
+    let [employee, project, startDate, endDate] = lines[i]
+      .split(",")
+      .map((e) => e.trim());
 
     // Validate all inputs
     let inputErrors = validateInputs(project, employee, startDate, endDate);
@@ -17,7 +19,9 @@ export function convertCSVToJson(csvData) {
     if (inputErrors.length === 0) {
       startDate = moment(startDate).format("YYYY/MM/DD");
       endDate =
-        endDate == null || endDate.length === 0
+        endDate === null ||
+        endDate.length === 0 ||
+        endDate.toLowerCase() === "null"
           ? "null"
           : moment(endDate).format("YYYY/MM/DD");
 
@@ -33,7 +37,7 @@ export function convertCSVToJson(csvData) {
       error.push(
         `Line ${i + 1} is ignored due to the following errors input! `
       );
-      error.push(inputErrors);
+      inputErrors.map((e) => error.push(" - " + e));
     }
   }
   return { result, error };
