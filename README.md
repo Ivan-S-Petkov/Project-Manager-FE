@@ -1,70 +1,174 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Manager App
 
-## Available Scripts
+The goal of this app is to track employees, projects and tasks. It provides statistics and summary of colleagues working together the longest on a project and the respective duration.
 
-In the project directory, you can run:
+ **NOTE**: 
+ Being part of Sirma Academy and successfully reaching the final stage for both paths: Java and JavaScript, I challenged myself to build a "Full Stack" project. Some of the requirements are fulfilled on the front-end, some on the back-end and some on both sides.
 
-### `npm start`
+[Project Manager - Back End Link](https://github.com/Ivan-S-Petkov/Project-Manager-BE)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The project has been deployed: [Live link](https://project-manager-6ccf3.web.app/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Description
 
-### `npm test`
+The user is able to perform the following operations for:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Employee:
+ - add: required fields - name and department
+ - edit
+ - search: by name or department
+ - filter: by department
 
-### `npm run build`
+Project:
+ - add: required fields - name and description
+ - edit
+ - search: by name or description
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Task:
+ - assign project to an employee, specify time frame
+ - search: by emplyee and project name
+ - delete
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Mass Data Upload:
+ - upload CSV file with multiple records
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Validations
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+ Employee - name and department should be between 2 and 20 characters.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+ Project - name should be between 2 and 20 character, description should be between 10 and 200 symbols.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+ Task - project and employee are selected from dropdown list. BE would validate if they exist in the DB. Start Date should not be in the future. End date should not be in the future. Start Date should be before End Date. BE would validate if the employee is already working on this project for the specified time frame. Start and End Date could be in any format except whereas the date starts with month or day digits (leaving year digits last) regardless of the separator. End Date could be left empty. If so it is considered as ongoing.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+ Mass Data Upload - validates if there is a file loaded and if it is the correct .csv file format. Checks if project and employee IDs are numbers. BE would validate if they exist in the DB. Start Date and End Date validations are the same as per adding single task (above). End Date could be entered as "null". BE would perform an additional check if the employee has already been working on this task for the specified time frame.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Client:** React, Styled-Components
 
-### Code Splitting
+**Server:** Spring, Postgres
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Implementations
 
-### Analyzing the Bundle Size
+API Calls - Axios
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Styling - Styled-Components
 
-### Making a Progressive Web App
+Routing - React Router Dom
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Date Formatting - Moment
 
-### Advanced Configuration
+Enviorment Variables - Env-cmd
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Context - implemented global error variable. It could be used for notifications as well
 
-### Deployment
+Custom Hooks - implemented custom hooks to separate the business logic from components especially in a lengthy components
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Utils - CSV Reader and Validations
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Additional explanations regarding the business logic 
+1. CSV Util is responsible for reading the data from the CSV file. Once the data is checked ONLY the valid records are sent as JSON to the server.
+
+2. BE supports endpoint: `api/statistics`. It returns all pairs of colleagues working at the same time on the same project and the duration. 
+``` JSON
+[
+    {
+        "project": {
+            "id": 1,
+            "name": "JavaScript Basics",
+            "description": "Introduction to variables, scopes conditions, loops, functions and classes."
+        },
+        "employeeOne": {
+            "id": 1,
+            "name": "Ivan Petkov",
+            "department": "Front End"
+        },
+        "employeeTwo": {
+            "id": 2,
+            "name": "Alen Paunov",
+            "department": "Full Stack"
+        },
+        "duration": 2
+    },
+    ...
+    ...
+    ...
+    {
+        "project": {
+            "id": 2,
+            "name": "Java Basics",
+            "description": "Fundamentals to conditions, loops, classes and methods."
+        },
+        "employeeOne": {
+            "id": 2,
+            "name": "Alen Paunov",
+            "department": "Full Stack"
+        },
+        "employeeTwo": {
+            "id": 1,
+            "name": "Ivan Petkov",
+            "department": "Front End"
+        },
+        "duration": 2
+    }
+] 
+```
+
+FE is responsible to finding the MAX duration and identifies the respective project(s) and pair(s). For more details about the algorithm of creating those pairs please follow the [Project Manager - Back End Link](https://github.com/Ivan-S-Petkov/Project-Manager-BE). 
+
+
+## Run Locally
+
+Clone the project:
+
+```bash
+  git clone https://github.com/Ivan-S-Petkov/Project-Manager-FE
+```
+
+Go to the project directory:
+
+```bash
+  cd my-project
+```
+
+Install dependencies:
+
+```bash
+  npm install
+```
+
+Start using local BE server: 
+
+```bash
+  npm run start
+```
+
+OR
+
+Start using local BE remote server:
+
+```bash
+  npm run start:prod
+```
+
+
+## Final Words
+
+The project has been deployed - [Live link](https://project-manager-6ccf3.web.app/)
+
+https://firebase.google.com/ - hosting the front end
+
+https://www.docker.com/ - creating and hosting Docker image
+
+https://render.com/ - creating a web service consuming the Docker image
+
+https://neon.tech/ - serverless postgres
+
+Footer - I hope you enjoyed the footer :) It represents a simple process flow of: 
+
+### Inspiration &rarr; Learn &rarr; Develop
+
